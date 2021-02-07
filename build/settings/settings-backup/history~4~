@@ -1,0 +1,22 @@
+[vfs.browser.filter]
+*\[^~#\]
+[vfs.browser.path]
+C:\\Users\\Zahra Rahmani\\eclipse-workspace\\jEdit
+[action]
+global-options
+paste
+backspace
+cut
+insert-newline-indent
+delete
+copy
+select-all
+save
+buffer-options
+undo
+new-view
+set-view-title
+toggle-full-screen
+[clipboard]
+ghjgjggjhhj\nsdfgffhghkj\ngjhggjfthdhdhf\nhgjhhfgffdyut
+ghjgjggjhhj\nsdfgffhghkj\ngjhggjfthdhdhf\nhgjhhfgffdyut\n

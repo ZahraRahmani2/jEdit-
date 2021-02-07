@@ -103,6 +103,12 @@ public class TextAreaPainter extends JComponent implements TabExpander
 	public static final int WRAP_GUIDE_LAYER = -20;
 
 	/**
+	 * Notepad Style layer. Most extensions will be above this layer.
+	 * @since jEdit 4.0pre4
+	 */
+	public static final int NOTEPAD_STYLE_LAYER = -15;
+
+	/**
 	 * Below most extensions layer.
 	 * @see #addExtension(int,TextAreaExtension)
 	 * @since jEdit 4.0pre4
@@ -611,6 +617,30 @@ public class TextAreaPainter extends JComponent implements TabExpander
 		repaint();
 	} //}}}
 
+
+	//added
+	public final Color getNotepadStyleColor()
+	{
+		return notepadStyleColor;
+	}
+	
+	public final void setNotepadStyleColor(Color notepadStyleColor)
+	{
+		this.notepadStyleColor = notepadStyleColor;
+		repaint();
+	}
+	
+	public final boolean isNotepadStylePainted()
+	{
+		return notepadStyle;
+	}
+	
+	public final void setNotepadStylePainted(boolean notepadStyle)
+	{
+		this.notepadStyle = notepadStyle;
+		repaint();
+	}
+
 	//{{{ getFoldLineStyle() method
 	/**
 	 * Returns the fold line style. The first element is the style for
@@ -970,6 +1000,8 @@ public class TextAreaPainter extends JComponent implements TabExpander
 	Color eolMarkerColor;
 	String eolMarkerChar;
 	Color wrapGuideColor;
+	//added
+	Color notepadStyleColor;
 
 	SyntaxStyle[] foldLineStyle;
 
@@ -979,6 +1011,8 @@ public class TextAreaPainter extends JComponent implements TabExpander
 	boolean structureHighlight;
 	boolean eolMarkers;
 	boolean wrapGuide;
+	//added
+	boolean notepadStyle;
 	AntiAlias antiAlias;
 	boolean fracFontMetrics;
 	RenderingHints renderingHints;
@@ -1023,6 +1057,9 @@ public class TextAreaPainter extends JComponent implements TabExpander
 		caretExtension = new PaintCaret();
 
 		extraLineSpacing = 0;
+
+		//added
+		addExtension(NOTEPAD_STYLE_LAYER,new NotepadStyle());
 	} //}}}
 
 	//}}}
@@ -1370,6 +1407,28 @@ public class TextAreaPainter extends JComponent implements TabExpander
 			return null;
 		}
 	} //}}}
+
+	//added
+	//{{{ NotePad Style class
+		private class NotepadStyle extends TextAreaExtension
+		{
+			@Override
+			public void paintValidLine(Graphics2D gfx, int screenLine,
+				int physicalLine, int start, int end, int y)
+				{
+					if(isNotepadStylePainted())
+					{
+						gfx.setColor(getNotepadStyleColor());
+						for(int i =textArea.painter.getLineHeight(); 
+						i < textArea.painter.getHeight()-textArea.getFirstLine() + 1; i=i+ textArea.painter.getLineHeight())
+						{
+							gfx.drawLine(textArea.getHorizontalOffset(),textArea.getFirstLine() + i ,
+									textArea.painter.getWidth(), textArea.getFirstLine() + i);
+						}
+					}
+				} 	
+		}//}}}
+
 
 	//{{{ PaintText class
 	private class PaintText extends TextAreaExtension
